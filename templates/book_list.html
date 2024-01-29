@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>Book List</h1>
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}! <a href="{% url 'user_logout' %}">Logout</a></p>
+{% else %}
+    <p><a href="{% url 'user_login' %}">Login</a> to select books. Or <a href="{% url 'register' %}">register</a> if you don't have an account.</p>
+{% endif %}
+<form method="post" action="{% url 'select_books' %}">
+    {% csrf_token %}
+    <ul>
+        {% for book in books %}
+            <li>
+                <input type="checkbox" name="selected_books" value="{{ book.id }}">
+                {{ book.title }} - {{ book.author }}
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <button type="submit">Select Books</button>
+</form>
+<form method="post" action="{% url 'select_books' %}">
+    {% csrf_token %}
+    <ul>
+        {% for book in books %}
+            <li>
+                <input type="checkbox" name="selected_books" value="{{ book.id }}"
+                    {% if book.id in selected_books %} checked {% endif %}>
+                {{ book.title }} - {{ book.author }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Select Books</button>
+</form>
+<form method="post" action="{% url 'deselect_books' %}">
+    {% csrf_token %}
+    <ul>
+        {% for selected_book in selected_books %}
+            <li>
+                <input type="checkbox" name="deselected_books" value="{{ selected_book.book.id }}">
+                {{ selected_book.book.title }} - {{ selected_book.book.author }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Deselect Books</button>
+</form>
+
+</body>
+</html>

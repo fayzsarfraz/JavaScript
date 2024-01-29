@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>Selected Books</h1>
+<p>Welcome, {{ user.username }}! <a href="{% url 'user_logout' %}">Logout</a></p>
+<ul>
+    {% for book_id in selected_books %}
+        <li>{{ book_id }}</li>
+    {% endfor %}
+</ul>
+
+
+</body>
+</html>
